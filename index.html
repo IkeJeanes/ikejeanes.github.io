@@ -1,0 +1,385 @@
+<html>
+	<head>
+		<title>US DST Map</title>
+		<meta charset="utf-8" />
+		<script type = "text/javascript" src = "https://cdnjs.cloudflare.com/ajax/libs/d3/7.6.1/d3.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+        <script src="https://unpkg.com/topojson@3"></script>
+		<style>
+            @import url('https://fonts.cdnfonts.com/css/tr-tempus-sans-itc');
+            body,html {
+                height: 100%;
+                width: 100%;
+                padding: 0;
+                margin : 0;
+            }
+            .main {
+                display: flex;
+                flex-direction: column;
+                font-family: roboto;
+                font-size: 11pt;
+                width: 80%;
+                height: 100%;
+                left: 10%;
+                position: relative;
+            }
+            .middle {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+            .header {
+                padding-bottom: 1em;
+            }
+            .head-title {
+                font-family: 'TR Tempus Sans ITC', sans-serif;
+                font-size: 17pt !important;
+                font-weight: bold;
+                padding-bottom: 0.8em;
+                text-align: center !important;
+            }
+            .header span {
+                display: block;
+                width: 100%;
+                text-align: justify;
+                font-size: 11pt;
+            }
+            .footer {
+
+                font-size: 11pt;
+                text-align: justify;
+                padding-top: 1em;
+                position: relative;
+            }
+            .footer span {
+                display: block;
+                width: auto;
+                padding: 5px;
+            }
+            #svgContainer {
+                position: relative;
+                height: 100%;
+                aspect-ratio: 3.1/2;
+            }            
+            .left-side {
+                font-size: 10pt;
+                padding: 0.5em 2em 0.5em 0.5em;
+            }
+            .left-side p {
+                margin: 0;
+            }
+            .left-side h3 {
+                margin: 0.3em;
+            }
+            .county {
+                stroke-width: 1;
+                cursor: pointer;
+            }
+            .data-row {
+                display: flex;
+                flex-direction: row;
+                justify-content: flex-end;
+            }
+            .dynamic {
+                font-weight: bold;
+                color: red;
+                padding-left: 1em;
+                width: 4em;
+            }
+			.county:hover {
+                fill: #d6206c;
+                stroke: #d6206c;
+			}
+			#tooltip {
+                position: absolute;
+                width: max-content;
+                text-align: left;
+                height: auto;
+                background-color: rgb(255 255 255 / 90%);
+                padding: 0px 3px;
+                font-size: 10pt;
+                font-weight: bold;
+                border-radius: 2px;
+                font-family: roboto;
+                pointer-events: none;
+            }	
+            #radioGroup {
+                position: absolute;
+                font-size: 10pt;
+                background-color: #ffffffcc;
+                border-radius: 2px;
+                bottom: -10px;
+                left: 2px;
+            }
+            #radioGroup p {
+                margin: 0;
+            }
+            .author {
+                text-align: center;
+                font-weight: bold;
+                font-size: 10pt;
+                color: #919191;
+            }
+            .author a {
+                color: #919191;
+            }
+            @media only screen and (max-width: 768px) {
+                .head-title { font-size: 12pt;}
+                .header {height: fit-content; font-size: 10pt;}
+                .footer { font-size: 8pt;}
+                .left-side { font-size: 8pt;}
+		    }	
+            @media only screen and (max-width: 1100px) and (min-width: 760px) {
+                .main {
+                    width: 90%;
+                    left: 5%;
+                } 
+		    }	           	       
+		</style>	
+	</head>
+	<body>
+		<div class="main">
+            <div class="header">
+                <span class="head-title">Five DST Options: Evaluating Morning Impact on Health and School Children Safety </span>
+                <span>When DSTs are long they they often have adverse impact. To compare a short Memorial Day DST to the currently practiced DST, 
+                    move the cursor to various points on this interactive map.
+                    For these two DSTs you will see percent of days having sunrises later than 7:00 AM. The higher the percent, the more adverse the impact.</span>
+            </div>
+            <div class="middle">
+                <div class="left-side">
+                    <div class="data-row"><h3 id="county-name">Pulaski, VA</h3><span class="dynamic">&nbsp;&nbsp;&nbsp;</span></div>
+                    <div>
+                        <div class="data-row"><span>Population:</span><span class="dynamic" id="data-population">34 k</span></div>
+                        <div class="data-row"><span>Solar Delay in minutes:</span><span class="dynamic" id="data-delay">23</span></div>
+                        <div class="data-row"><span>With DST, Delay in minutes::</span><span class="dynamic" id="data-delay-dst">83</span></div>
+                    </div>
+                    <div>
+                        <div class="data-row"><h3>#1 No DST</h3><span class="dynamic" id="data-population">&nbsp;&nbsp;&nbsp;</span></div> 
+                        <div class="data-row"><span>% Sunrises after 7:00 AM:</span><span class="dynamic" id="nodst-pr-sun-7">28%</span></div>
+                        <div class="data-row"><span>Latest Sunrise:</span><span class="dynamic" id="nodst-min-sun-7">7:35</span></div>
+                    </div>
+                    <div>
+                        <div class="data-row"><h3>#2 Memorial Day DST</h3><span class="dynamic" id="data-population">&nbsp;&nbsp;&nbsp;</span></div>
+                        <div class="data-row"><span>% Sunrises after 7:00 AM:</span><span class="dynamic" id="memorial-pr-sun-7">28%</span></div>
+                        <div class="data-row"><span>Latest Sunrise:</span><span class="dynamic" id="memorial-min-sun-7">7:35</span></div>
+                    </div>
+                    <div>
+                        <div class="data-row"><h3>#3 1966-2006 DST</h3><span class="dynamic" id="data-population">&nbsp;&nbsp;&nbsp;</span></div> 
+                        <div class="data-row"><span>% Sunrises after 7:00 AM:</span><span class="dynamic" id="1966-pr-sun-7">42%</span></div>
+                        <div class="data-row"><span>Latest Sunrise:</span><span class="dynamic" id="1966-min-sun-7">7:45</span></div>
+                    </div>
+                    <div>
+                        <div class="data-row"><h3>#4 2007 Current DST</h3><span class="dynamic" id="data-population">&nbsp;&nbsp;&nbsp;</span></div> 
+                        <div class="data-row"><span>% Sunrises after 7:00 AM:</span><span class="dynamic" id="current-pr-sun-7">51%</span></div>
+                        <div class="data-row"><span>Latest Sunrise:</span><span class="dynamic" id="current-min-sun-7">7:50</span></div>
+                    </div>
+                    <div>
+                        <div class="data-row"><h3>#5 Permanent DST</h3><span class="dynamic" id="data-population">&nbsp;&nbsp;&nbsp;</span></div> 
+                        <div class="data-row"><span>% Sunrises after 7:00 AM:</span><span class="dynamic" id="permanent-pr-sun-7">58%</span></div>
+                        <div class="data-row"><span>Latest Sunrise:</span><span class="dynamic" id="permanent-min-sun-7">8:35</span></div>
+                    </div>                   
+                </div>
+                <div id="svgContainer">
+                </div>
+            </div>
+            <div class="footer">
+                <span>Arizona and Hawaii have rejected DST. Sec. 260a allows any state to go on permanent Standard Time within its borders without congressional action. 
+                    To change a DST requires congressional action. DSTs are designated at county levels named in the Table. </span>
+                <span>The adverse impact of large positive solar delays is often referred to as the "Western Edge Effect." 
+                    Small or negative delays are generally considered beneficial. For DST rejectionists, experiments to maintain sync with solar time 
+                    by setting clocks and watches within a household to local solar time and using DST time elsewhere are occasionally possible.</span>
+                <span>Options Summary: <b style="font-size: 12pt;">#1</b> No DST; <b style="font-size: 12pt;">#2</b> Memorial to Labor Day DST, May 20 - Sep 9, 113 Days, 31% of year; <b style="font-size: 12pt;">#3</b> 1966 to 2006 DST, Apr 24 - Oct 30, 190 Days, 52% of year;
+                    <b style="font-size: 12pt;">#4</b> Current DST, Mar 10 - Nov 3, 239 Days, 65% of year; <b style="font-size: 12pt;">#5</b> Proposed Permanent DST, 100% of year. </span>
+                    <span class="author"><a href="https://creativecommons.org/licenses/">Creative commons license CC BY-ND.</a> <a href="mailto:pedjo.work2015@gmail.com">Courtesy of I. Jeanes.</a></span>
+            </div>             
+		</div>	
+
+		<script>	
+
+			const w = 700;
+			const h = 450;
+			const padding = 10;
+
+            const colors = ["#f3f3e6", "#7a9163", "#4f7b58", "#ab3130", "#6b1b10"];
+            
+            const tooltip = d3.select("body").append("div")	
+				.attr("id", "tooltip")				
+				.style("opacity", 0);
+
+            // just div svgContainer
+            const svgCont = d3.select("#svgContainer"); 
+
+            // svg element inside svgContainer
+            const svg = d3.select("#svgContainer")
+                .append("svg")
+                .attr("viewBox", `0 0 ${w} ${h}`);
+
+            // group inside svg for scaling
+            const g = svg.append("g");
+
+            // load all external source and waiting
+            Promise.all([
+                d3.csv("data.csv"),
+				d3.json("counties.json"),
+                ]).then(([datum, geom]) => {
+                    ready(null, datum, geom);
+            });
+
+            function ready(error, data, geo) {
+
+                // add layers to map
+                const counties = topojson.feature(geo, geo.objects.counties);
+                const states = topojson.feature(geo, geo.objects.states);
+
+                // join data from topojson and csv
+                counties.features.forEach(function(county, i) {
+                    data.forEach(function(dat, j) {
+                        if (county.properties.CountID === dat.Count ) {
+                            Object.assign(county.properties, dat);
+                        }
+                    })
+                }); 
+                
+                // set projection with padding for map
+                const projection = d3.geoIdentity().reflectY(true)
+                    .fitExtent([[padding,padding],[w-padding,h-padding]], counties);
+
+                const path = d3.geoPath().projection(projection);
+
+                // set colors scale for counties
+                const colorScale = d3.scaleQuantile()
+					.domain([1, 2, 3, 4, 5])
+                    .range(colors);
+
+                // add counties layer to map
+                g.append("g")
+                    .selectAll("path")
+                    .data(counties.features)
+                    .enter()
+                    .append("path")
+                    .attr("d", path)
+                    .attr("fill", (d) => colorScale(parseInt(d.properties.Color)))
+                    .attr("stroke", (d) => colorScale(parseInt(d.properties.Color)))
+                    .attr("stroke-linecap", "round")
+                    .attr("stroke-linejoin", "round")
+                    .attr("class", "county")
+                    .on('mouseover', function (event, d)  {
+                        tooltip.style("opacity", .9);
+                        // set left padding for tooltip
+                        tooltip.style("left", (function () { 
+                            let tooltipWidth = document.getElementById('tooltip').getBoundingClientRect().width;
+                            let limitWidth = (window.innerWidth - tooltipWidth) - 25;
+                            if (event.pageX > limitWidth) {return (event.pageX - tooltipWidth) + "px";}
+                            else {return event.pageX + "px";}
+                        }));  
+                        // set top padding for tooltip                               
+                        tooltip.style("top", (function () {
+                            if (event.pageY < 160) {return (event.pageY + 30) + "px"}
+                            else {return (event.pageY - 50) + "px"}
+                        })); 
+                        // add dynamic content to tooltip
+                        tooltip.html("<span style='color: black;'>Short DST: <span><span style='color: red;'>" + d.properties["#2_%aft7:00"] + "</span><br><span style='color: black;'>Long DST: <span><span style='color: red;'>" + d.properties["#4_%aft7:00"] + "</span>");
+                        
+                        // change table data dynamically after each mouseover
+                        let selectedVal = $('input[name="radiogroup"]:checked').val(); 
+                        if (selectedVal === 'mouse') {
+                            $('#county-name').html(d.properties.Header);
+                            $('#data-population').html(d.properties.population);
+                            $('#data-delay').html(d.properties.Delay);
+                            $('#data-delay-dst').html(d.properties["Delay with DST"]);
+                            $('#nodst-pr-sun-7').html(d.properties["#1_%aft7:00"]);
+                            $('#nodst-min-sun-7').html(d.properties["#1 hour"]);
+                            $('#memorial-pr-sun-7').html(d.properties["#2_%aft7:00"]);
+                            $('#memorial-min-sun-7').html(d.properties["#2 hour"]);
+                            $('#1966-pr-sun-7').html(d.properties["#3_%aft7:00"]);
+                            $('#1966-min-sun-7').html(d.properties["#3 hour"]);
+                            $('#current-pr-sun-7').html(d.properties["#4_%aft7:00"]);
+                            $('#current-min-sun-7').html(d.properties["#4 hour"]);
+                            $('#permanent-pr-sun-7').html(d.properties["#5_%aft7:00"]);
+                            $('#permanent-min-sun-7').html(d.properties["#5 hour"]);
+                        } else {
+                            console.log('Mouseover disable')
+                        }                        
+                    })
+                    .on("mouseout", (event, d) => {
+                        tooltip.style("opacity", 0);
+                    })
+                    .on('click', function(event, d) {
+                        // change table data dynamically after each click
+                        let selectedVal = $('input[name="radiogroup"]:checked').val();
+
+                        if (selectedVal === 'click') {
+                            $('#county-name').html(d.properties.Header);
+                            $('#data-population').html(d.properties.population);
+                            $('#data-delay').html(d.properties.Delay);
+                            $('#data-delay-dst').html(d.properties["Delay with DST"]);
+                            $('#nodst-pr-sun-7').html(d.properties["#1_%aft7:00"]);
+                            $('#nodst-min-sun-7').html(d.properties["#1 hour"]);
+                            $('#memorial-pr-sun-7').html(d.properties["#2_%aft7:00"]);
+                            $('#memorial-min-sun-7').html(d.properties["#2 hour"]);
+                            $('#1966-pr-sun-7').html(d.properties["#3_%aft7:00"]);
+                            $('#1966-min-sun-7').html(d.properties["#3 hour"]);
+                            $('#current-pr-sun-7').html(d.properties["#4_%aft7:00"]);
+                            $('#current-min-sun-7').html(d.properties["#4 hour"]);
+                            $('#permanent-pr-sun-7').html(d.properties["#5_%aft7:00"]);
+                            $('#permanent-min-sun-7').html(d.properties["#5 hour"]);
+                        } else {
+                            console.log('Clicking disable')
+                        }
+                    });	  
+                
+                // add states layer
+                g.append("g")
+                    .selectAll("path")
+                    .data(states.features)
+                    .enter()
+                    .append("path")
+                    .attr("d", path)
+                    .attr("stroke", "#444444")
+                    .attr("stroke-width", 0.75)
+                    .attr("stroke-linecap", "round")
+                    .attr("stroke-linejoin", "round")
+                    .attr("fill", "none")
+                    .style("pointer-events", "none"); 
+                    
+                // add radio buttons to the map
+                const radio = svgCont.append("form")
+                    .attr("id", "radioGroup")
+                    .style("position", 'absolute');
+
+                radio.html('<input type="radio" id="enable" name="radiogroup" value="click" checked />\
+                    <label for="enable">Table changes when clicking</label></br>\
+                    <input type="radio" id="disable" name="radiogroup" value="mouse" />\
+                    <label for="disable">Continuously changing Table</label>');       
+
+                // add map title
+                const mapTitle = svg.append("text")
+                    .attr("x", 250)
+                    .attr("y", 15)
+                    .attr("id", "mapTitle")
+                    .text("Click on map to update Table.");	
+                    
+                let bbox = mapTitle.node().getBBox();
+                let tpadding = 2.5;
+                let rect = svg.insert("rect", "text")
+                    .attr("x", bbox.x - tpadding)
+                    .attr("y", bbox.y - tpadding)
+                    .attr("width", bbox.width + (tpadding*2))
+                    .attr("height", bbox.height + (tpadding*2))
+                    .style("fill", "#ffffffb3");   
+
+                // add zoom and drag functionality to the map
+                svg.call(d3.zoom()
+                    .extent([[0, 0], [w, h]])
+                    .scaleExtent([1, 8])
+                    .on("zoom", zoomed));
+
+                function zoomed({transform}) {
+                    g.attr("transform", transform);
+                };
+            };
+
+		</script>
+
+	</body>
+</html>
