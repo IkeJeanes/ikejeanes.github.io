@@ -63,7 +63,6 @@
             }            
             .left-side {
                 font-size: 10pt;
-                padding: 0.5em 2em 0.5em 0.5em;
             }
             .left-side p {
                 margin: 0;
@@ -124,17 +123,42 @@
                 color: #919191;
             }
             @media only screen and (max-width: 768px) {
-                .head-title { font-size: 12pt;}
-                .header {height: fit-content; font-size: 10pt;}
-                .footer { font-size: 8pt;}
-                .left-side { font-size: 8pt;}
+                .head-title { }
+                .header {height: fit-content; }
+                .footer { }
 		    }	
-            @media only screen and (max-width: 1100px) and (min-width: 760px) {
-                .main {
-                    width: 90%;
-                    left: 5%;
-                } 
-		    }	           	       
+            @media only screen and (max-width: 1040px) {
+                .left-side {font-size: 1.1vw;}
+                .header {padding-bottom: 1vw;}
+                .header span {font-size: 1.3vw;}
+                .head-title {font-size: 2vw !important;}
+                .footer {font-size: 1.3vw;}
+                .footer b {font-size: 1.45vw;}
+                .header span {padding: 0.9vw;}
+                .footer span {padding: 0.9vw;}
+                .author {font-size: 1.1vw;}
+                #tooltip {
+                    font-size: 1.2vw;
+                }
+                #radioGroup {
+                    font-size: 1.2vw;
+                    left: 0.5vw;
+                    bottom: -1vw;
+                    padding: 0.2vw;
+                    width: 18vw;
+                }
+                #radioGroup input {
+                    width: 7%;
+                    height: 2vw;
+                    line-height: 0;
+                    vertical-align: text-bottom;
+                    margin: 0px 0px 0px 2px;
+                }
+                #radioGroup label {
+                    float: right;
+                    padding-top: 0.25vw;
+                }
+		    }           	       
 		</style>	
 	</head>
 	<body>
@@ -151,7 +175,7 @@
                     <div>
                         <div class="data-row"><span>Population:</span><span class="dynamic" id="data-population">34 k</span></div>
                         <div class="data-row"><span>Solar Delay in minutes:</span><span class="dynamic" id="data-delay">23</span></div>
-                        <div class="data-row"><span>With DST, Delay in minutes::</span><span class="dynamic" id="data-delay-dst">83</span></div>
+                        <div class="data-row"><span>With DST, Delay in minutes:</span><span class="dynamic" id="data-delay-dst">83</span></div>
                     </div>
                     <div>
                         <div class="data-row"><h3>#1 No DST</h3><span class="dynamic" id="data-population">&nbsp;&nbsp;&nbsp;</span></div> 
@@ -188,8 +212,8 @@
                 <span>The adverse impact of large positive solar delays is often referred to as the "Western Edge Effect." 
                     Small or negative delays are generally considered beneficial. For DST rejectionists, experiments to maintain sync with solar time 
                     by setting clocks and watches within a household to local solar time and using DST time elsewhere are occasionally possible.</span>
-                <span>Options Summary: <b style="font-size: 12pt;">#1</b> No DST; <b style="font-size: 12pt;">#2</b> Memorial to Labor Day DST, May 20 - Sep 9, 113 Days, 31% of year; <b style="font-size: 12pt;">#3</b> 1966 to 2006 DST, Apr 24 - Oct 30, 190 Days, 52% of year;
-                    <b style="font-size: 12pt;">#4</b> Current DST, Mar 10 - Nov 3, 239 Days, 65% of year; <b style="font-size: 12pt;">#5</b> Proposed Permanent DST, 100% of year. </span>
+                <span>Options Summary: <b >#1</b> No DST; <b >#2</b> Memorial to Labor Day DST, May 20 - Sep 9, 113 Days, 31% of year; <b >#3</b> 1966 to 2006 DST, Apr 24 - Oct 30, 190 Days, 52% of year;
+                    <b >#4</b> Current DST, Mar 10 - Nov 3, 239 Days, 65% of year; <b >#5</b> Proposed Permanent DST, 100% of year. </span>
                     <span class="author"><a href="https://creativecommons.org/licenses/">Creative commons license CC BY-ND.</a> <a href="mailto:pedjo.work2015@gmail.com">Courtesy of I. Jeanes.</a></span>
             </div>             
 		</div>	
@@ -274,8 +298,11 @@
                         }));  
                         // set top padding for tooltip                               
                         tooltip.style("top", (function () {
-                            if (event.pageY < 160) {return (event.pageY + 30) + "px"}
-                            else {return (event.pageY - 50) + "px"}
+                            let headerHeight = document.getElementById('header').getBoundingClientRect().height;
+                            let tooltipHeight = document.getElementById('tooltip').getBoundingClientRect().height;
+                            let limitHeight = headerHeight + (tooltipHeight * 1.2);
+                            if (event.pageY < limitHeight) {return (event.pageY + (tooltipHeight * 1.1)) + "px"}
+                            else {return (event.pageY - (tooltipHeight * 1.1)) + "px"}
                         })); 
                         // add dynamic content to tooltip
                         tooltip.html("<span style='color: black;'>Short DST: <span><span style='color: red;'>" + d.properties["#2_%aft7:00"] + "</span><br><span style='color: black;'>Long DST: <span><span style='color: red;'>" + d.properties["#4_%aft7:00"] + "</span>");
