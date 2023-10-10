@@ -1,6 +1,8 @@
 <html>
 	<head>
-		<title>US DST Map</title>
+		<title>Five DST Options: Evaluating Morning Impact on Health and School Children Safety</title>
+        <meta name="description" content="Interactive DST map Evaluates Five Daylight Saving Time Options">
+        <meta name="keywords" content="Interactive DST Map, Daylight Savings Time, Western Edge Effect, Changing the Clocks, DST and health">
 		<meta charset="utf-8" />
 		<script type = "text/javascript" src = "https://cdnjs.cloudflare.com/ajax/libs/d3/7.6.1/d3.min.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
@@ -18,18 +20,18 @@
                 flex-direction: column;
                 font-family: roboto;
                 font-size: 11pt;
-                width: 80%;
+                width: 90%;
                 height: 100%;
-                left: 10%;
+                left: 5%;
                 position: relative;
             }
             .middle {
                 display: flex;
-                justify-content: center;
+                justify-content: space-evenly;
                 align-items: center;
             }
             .header {
-                padding-bottom: 1em;
+                height: 3vw;
             }
             .head-title {
                 font-family: 'TR Tempus Sans ITC', sans-serif;
@@ -83,7 +85,13 @@
                 font-weight: bold;
                 color: red;
                 padding-left: 1em;
-                width: 4em;
+                width: 2.25em;
+            }
+            .b-dynamic {
+                font-weight: bold;
+                color: black;
+                padding-left: 0.25em;
+                width: 2.25em;
             }
 			.county:hover {
                 fill: #d6206c;
@@ -124,12 +132,10 @@
             }
             @media only screen and (max-width: 768px) {
                 .head-title { }
-                .header {height: fit-content; }
                 .footer { }
 		    }	
             @media only screen and (max-width: 1040px) {
                 .left-side {font-size: 1.1vw;}
-                .header {padding-bottom: 1vw;}
                 .header span {font-size: 1.3vw;}
                 .head-title {font-size: 2vw !important;}
                 .footer {font-size: 1.3vw;}
@@ -145,14 +151,13 @@
                     left: 0.5vw;
                     bottom: -1vw;
                     padding: 0.2vw;
-                    width: 18vw;
                 }
                 #radioGroup input {
                     width: 7%;
                     height: 2vw;
                     line-height: 0;
                     vertical-align: text-bottom;
-                    margin: 0px 0px 0px 2px;
+                    margin: 0;
                 }
                 #radioGroup label {
                     float: right;
@@ -163,58 +168,45 @@
 	</head>
 	<body>
 		<div class="main">
-            <div class="header" id="header">
-                <span class="head-title">Five DST Options: Evaluating Morning Impact on Health and School Children Safety </span>
-                <span>When DSTs are long they often have adverse impact. To compare a short Memorial Day DST to the currently practiced DST, 
-                    move the cursor to various points on this interactive map.
-                    For these two DSTs you will see percent of days having sunrises later than 7:00 AM. The higher the percent, the more adverse the impact.</span>
-            </div>
+            <div class="header" id="header"></div>
             <div class="middle">
                 <div class="left-side">
                     <div class="data-row"><h3 id="county-name">Pulaski, VA</h3><span class="dynamic">&nbsp;&nbsp;&nbsp;</span></div>
                     <div>
-                        <div class="data-row"><span>Population:</span><span class="dynamic" id="data-population">34 k</span></div>
-                        <div class="data-row"><span>Solar Delay in minutes:</span><span class="dynamic" id="data-delay">23</span></div>
-                        <div class="data-row"><span>With DST, Delay in minutes:</span><span class="dynamic" id="data-delay-dst">83</span></div>
+                        <div class="data-row"><span>Population:</span><span class="dynamic" id="data-population" style="width: 5em;">34 k</span></div>
+                        <div class="data-row"><span>Solar Delay in minutes:</span><span class="dynamic" id="data-delay">23</span>|<span class="b-dynamic" id="b_data-delay">… …</span></div>
+                        <div class="data-row"><span>With DST, Delay in minutes:</span><span class="dynamic" id="data-delay-dst">83</span>|<span class="b-dynamic" id="b_data-delay-dst">… …</span></div>
                     </div>
                     <div>
                         <div class="data-row"><h3>#1 No DST</h3><span class="dynamic" id="data-population">&nbsp;&nbsp;&nbsp;</span></div> 
-                        <div class="data-row"><span>% Sunrises after 7:00 AM:</span><span class="dynamic" id="nodst-pr-sun-7">28%</span></div>
-                        <div class="data-row"><span>Latest Sunrise:</span><span class="dynamic" id="nodst-min-sun-7">7:35</span></div>
+                        <div class="data-row"><span>% Sunrises after 7:00 AM:</span><span class="dynamic" id="nodst-pr-sun-7">28%</span>|<span class="b-dynamic" id="b_nodst-pr-sun-7">… …</span></div>
+                        <div class="data-row"><span>Latest Sunrise:</span><span class="dynamic" id="nodst-min-sun-7">7:35</span>|<span class="b-dynamic" id="b_nodst-min-sun-7">… …</span></div>
                     </div>
                     <div>
                         <div class="data-row"><h3>#2 Memorial Day DST</h3><span class="dynamic" id="data-population">&nbsp;&nbsp;&nbsp;</span></div>
-                        <div class="data-row"><span>% Sunrises after 7:00 AM:</span><span class="dynamic" id="memorial-pr-sun-7">28%</span></div>
-                        <div class="data-row"><span>Latest Sunrise:</span><span class="dynamic" id="memorial-min-sun-7">7:35</span></div>
+                        <div class="data-row"><span>% Sunrises after 7:00 AM:</span><span class="dynamic" id="memorial-pr-sun-7">28%</span>|<span class="b-dynamic" id="b_memorial-pr-sun-7">… …</span></div>
+                        <div class="data-row"><span>Latest Sunrise:</span><span class="dynamic" id="memorial-min-sun-7">7:35</span>|<span class="b-dynamic" id="b_memorial-min-sun-7">… …</span></div>
                     </div>
                     <div>
                         <div class="data-row"><h3>#3 1966-2006 DST</h3><span class="dynamic" id="data-population">&nbsp;&nbsp;&nbsp;</span></div> 
-                        <div class="data-row"><span>% Sunrises after 7:00 AM:</span><span class="dynamic" id="1966-pr-sun-7">42%</span></div>
-                        <div class="data-row"><span>Latest Sunrise:</span><span class="dynamic" id="1966-min-sun-7">7:45</span></div>
+                        <div class="data-row"><span>% Sunrises after 7:00 AM:</span><span class="dynamic" id="1966-pr-sun-7">42%</span>|<span class="b-dynamic" id="b_1966-pr-sun-7">… …</span></div>
+                        <div class="data-row"><span>Latest Sunrise:</span><span class="dynamic" id="1966-min-sun-7">7:45</span>|<span class="b-dynamic" id="b_1966-min-sun-7">… …</span></div>
                     </div>
                     <div>
                         <div class="data-row"><h3>#4 2007 Current DST</h3><span class="dynamic" id="data-population">&nbsp;&nbsp;&nbsp;</span></div> 
-                        <div class="data-row"><span>% Sunrises after 7:00 AM:</span><span class="dynamic" id="current-pr-sun-7">51%</span></div>
-                        <div class="data-row"><span>Latest Sunrise:</span><span class="dynamic" id="current-min-sun-7">7:50</span></div>
+                        <div class="data-row"><span>% Sunrises after 7:00 AM:</span><span class="dynamic" id="current-pr-sun-7">51%</span>|<span class="b-dynamic" id="b_current-pr-sun-7">… …</span></div>
+                        <div class="data-row"><span>Latest Sunrise:</span><span class="dynamic" id="current-min-sun-7">7:50</span>|<span class="b-dynamic" id="b_current-min-sun-7">… …</span></div>
                     </div>
                     <div>
                         <div class="data-row"><h3>#5 Permanent DST</h3><span class="dynamic" id="data-population">&nbsp;&nbsp;&nbsp;</span></div> 
-                        <div class="data-row"><span>% Sunrises after 7:00 AM:</span><span class="dynamic" id="permanent-pr-sun-7">58%</span></div>
-                        <div class="data-row"><span>Latest Sunrise:</span><span class="dynamic" id="permanent-min-sun-7">8:35</span></div>
+                        <div class="data-row"><span>% Sunrises after 7:00 AM:</span><span class="dynamic" id="permanent-pr-sun-7">58%</span>|<span class="b-dynamic" id="b_permanent-pr-sun-7">… …</span></div>
+                        <div class="data-row"><span>Latest Sunrise:</span><span class="dynamic" id="permanent-min-sun-7">8:35</span>|<span class="b-dynamic" id="b_permanent-min-sun-7">… …</span></div>
                     </div>                   
                 </div>
                 <div id="svgContainer">
                 </div>
             </div>
             <div class="footer">
-                <span>Arizona and Hawaii have rejected DST. Sec. 260a allows any state to go on permanent Standard Time within its borders without congressional action. 
-                    To change a DST requires congressional action. DSTs are designated at county levels named in the Table. </span>
-                <span>The adverse impact of large positive solar delays is often referred to as the "Western Edge Effect." 
-                    Small or negative delays are generally considered beneficial. For DST rejectionists, experiments to maintain sync with solar time 
-                    by setting clocks and watches within a household to local solar time and using DST time elsewhere are occasionally possible.</span>
-                <span>Options Summary: <b >#1</b> No DST; <b >#2</b> Memorial to Labor Day DST, May 20 - Sep 9, 113 Days, 31% of year; <b >#3</b> 1966 to 2006 DST, Apr 24 - Oct 30, 190 Days, 52% of year;
-                    <b >#4</b> Current DST, Mar 10 - Nov 3, 239 Days, 65% of year; <b >#5</b> Proposed Permanent DST, 100% of year. </span>
-                    <span class="author"><a href="https://creativecommons.org/licenses/">Creative commons license CC BY-ND.</a> <a href="mailto:pedjo.work2015@gmail.com">Courtesy of I. Jeanes.</a></span>
             </div>             
 		</div>	
 
@@ -305,13 +297,13 @@
                             else {return (event.pageY - (tooltipHeight * 1.1)) + "px"}
                         })); 
                         // add dynamic content to tooltip
-                        tooltip.html("<span style='color: black;'>Short DST: <span><span style='color: red;'>" + d.properties["#2_%aft7:00"] + "</span><br><span style='color: black;'>Long DST: <span><span style='color: red;'>" + d.properties["#4_%aft7:00"] + "</span>");
+                        tooltip.html("<span style='color: black;'>Short DST: </span><span style='color: red;'>" + d.properties["#2_%aft7:00"] + "</span> | <span style='color: black;'>" + d.properties["B_#2_%aft7:00"] + "</span><br><span style='color: black;'>Long DST:&nbsp;</span><span style='color: red;'>" + d.properties["#4_%aft7:00"] + "</span> | <span style='color: black;'>" + d.properties["B_#4_%aft7:00"] + "</span>");
                         
                         // change table data dynamically after each mouseover
                         let selectedVal = $('input[name="radiogroup"]:checked').val(); 
                         if (selectedVal === 'mouse') {
                             $('#county-name').html(d.properties.Header);
-                            $('#data-population').html(d.properties.population);
+                            $('#data-population').html(d.properties.k_population);
                             $('#data-delay').html(d.properties.Delay);
                             $('#data-delay-dst').html(d.properties["Delay with DST"]);
                             $('#nodst-pr-sun-7').html(d.properties["#1_%aft7:00"]);
@@ -324,8 +316,21 @@
                             $('#current-min-sun-7').html(d.properties["#4 hour"]);
                             $('#permanent-pr-sun-7').html(d.properties["#5_%aft7:00"]);
                             $('#permanent-min-sun-7').html(d.properties["#5 hour"]);
+
+                            $('#b_data-delay').html(d.properties.B_Delay);
+                            $('#b_data-delay-dst').html(d.properties["B_Delay with DST"]);
+                            $('#b_nodst-pr-sun-7').html(d.properties["B_#1_%aft7:00"]);
+                            $('#b_nodst-min-sun-7').html(d.properties["B_#1 hour"]);
+                            $('#b_memorial-pr-sun-7').html(d.properties["B_#2_%aft7:00"]);
+                            $('#b_memorial-min-sun-7').html(d.properties["B_#2 hour"]);
+                            $('#b_1966-pr-sun-7').html(d.properties["B_#3_%aft7:00"]);
+                            $('#b_1966-min-sun-7').html(d.properties["B_#3 hour"]);
+                            $('#b_current-pr-sun-7').html(d.properties["B_#4_%aft7:00"]);
+                            $('#b_current-min-sun-7').html(d.properties["B_#4 hour"]);
+                            $('#b_permanent-pr-sun-7').html(d.properties["B_#5_%aft7:00"]);
+                            $('#b_permanent-min-sun-7').html(d.properties["B_#5 hour"]);
                         } else {
-                            console.log('Mouseover disable')
+                            console.log('Mouseover disable');
                         }                        
                     })
                     .on("mouseout", (event, d) => {
@@ -337,7 +342,7 @@
 
                         if (selectedVal === 'click') {
                             $('#county-name').html(d.properties.Header);
-                            $('#data-population').html(d.properties.population);
+                            $('#data-population').html(d.properties.k_population);
                             $('#data-delay').html(d.properties.Delay);
                             $('#data-delay-dst').html(d.properties["Delay with DST"]);
                             $('#nodst-pr-sun-7').html(d.properties["#1_%aft7:00"]);
@@ -350,6 +355,19 @@
                             $('#current-min-sun-7').html(d.properties["#4 hour"]);
                             $('#permanent-pr-sun-7').html(d.properties["#5_%aft7:00"]);
                             $('#permanent-min-sun-7').html(d.properties["#5 hour"]);
+
+                            $('#b_data-delay').html(d.properties.B_Delay);
+                            $('#b_data-delay-dst').html(d.properties["B_Delay with DST"]);
+                            $('#b_nodst-pr-sun-7').html(d.properties["B_#1_%aft7:00"]);
+                            $('#b_nodst-min-sun-7').html(d.properties["B_#1 hour"]);
+                            $('#b_memorial-pr-sun-7').html(d.properties["B_#2_%aft7:00"]);
+                            $('#b_memorial-min-sun-7').html(d.properties["B_#2 hour"]);
+                            $('#b_1966-pr-sun-7').html(d.properties["B_#3_%aft7:00"]);
+                            $('#b_1966-min-sun-7').html(d.properties["B_#3 hour"]);
+                            $('#b_current-pr-sun-7').html(d.properties["B_#4_%aft7:00"]);
+                            $('#b_current-min-sun-7').html(d.properties["B_#4 hour"]);
+                            $('#b_permanent-pr-sun-7').html(d.properties["B_#5_%aft7:00"]);
+                            $('#b_permanent-min-sun-7').html(d.properties["B_#5 hour"]);
                         } else {
                             console.log('Clicking disable')
                         }
@@ -374,9 +392,9 @@
                     .attr("id", "radioGroup")
                     .style("position", 'absolute');
 
-                radio.html('<input type="radio" id="enable" name="radiogroup" value="click" checked />\
+                radio.html('<input type="radio" id="enable" name="radiogroup" value="click"  />\
                     <label for="enable">Table changes when clicking</label></br>\
-                    <input type="radio" id="disable" name="radiogroup" value="mouse" />\
+                    <input type="radio" id="disable" name="radiogroup" value="mouse" checked />\
                     <label for="disable">Continuously changing Table</label>');       
 
                 // add map title
@@ -384,7 +402,7 @@
                     .attr("x", 250)
                     .attr("y", 15)
                     .attr("id", "mapTitle")
-                    .text("Click on map to update Table.");	
+                    .text("Map is click, drag, & zoomable.");	
                     
                 let bbox = mapTitle.node().getBBox();
                 let tpadding = 2.5;
@@ -404,6 +422,10 @@
                 function zoomed({transform}) {
                     g.attr("transform", transform);
                 };
+
+                $('input[type=radio][name=radiogroup]').change(function() {
+                    startRadio = 'off';
+                });
             };
 
 		</script>
