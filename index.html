@@ -1,39 +1,46 @@
-<html>
+<!DOCTYPE html>
+<html lang="en-US">
 	<head>
-		<title>Five DST Options: Evaluating Morning Impact on Health and School Children Safety</title>
-        <meta name="description" content="Interactive DST map Evaluates Five Daylight Saving Time Options">
-        <meta name="keywords" content="Interactive DST Map, Daylight Savings Time, Western Edge Effect, Changing the Clocks, DST and health">
-		<meta charset="utf-8" />
-		<script type = "text/javascript" src = "https://cdnjs.cloudflare.com/ajax/libs/d3/7.6.1/d3.min.js"></script>
+		<title>Five DST Options: Impact on Health and School Children Safety</title>
+        <meta name="description" content="The two interactive maps on this page quickly give you a complete picture of DST and Time Zone options for your home county. All 3,000 US counties are covered.">
+        <meta name="keywords" content="Interactive DST Map, Daylight Savings Time, Western Edge Effect, Changing the Clocks, time zone, school bus morning darkness, FIVE DST, DST and health">
+		<meta charset="utf-8">
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.6.1/d3.min.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
         <script src="https://unpkg.com/topojson@3"></script>
 		<style>
             @import url('https://fonts.cdnfonts.com/css/tr-tempus-sans-itc');
-			@import url('https://fonts.googleapis.com/css2?family=Arimo&display=swap');
+		    @import url('https://fonts.googleapis.com/css2?family=Arimo&display=swap');
             body,html {
                 height: 100%;
                 width: 100%;
                 padding: 0;
                 margin : 0;
-		    font-family: 'Arimo', sans-serif;
+				font-family: 'Arimo', sans-serif;
             }
-            .main {
+           	table, th, td {
+				border:1px solid black;
+				text-align: center;
+				border:1px solid;
+				}
+
+			.main {
                 display: flex;
                 flex-direction: column;
                 font-family: 'Arimo', sans-serif;
                 font-size: 11pt;
-                width: 90%;
+                width: 80%;
                 height: 100%;
-                left: 5%;
+                left: 10%;
                 position: relative;
             }
             .middle {
                 display: flex;
-                justify-content: space-evenly;
+                justify-content: center;
                 align-items: center;
             }
             .header {
-                height: 3vw;
+                padding-bottom: 1em;
             }
             .head-title {
                 font-family: 'Arimo', sans-serif;
@@ -59,7 +66,7 @@
                 display: block;
                 width: auto;
                 padding: 5px;
-            }
+ 			}
             #svgContainer {
                 position: relative;
                 height: 100%;
@@ -87,13 +94,7 @@
                 font-weight: bold;
                 color: #6b1b10;
                 padding-left: 1em;
-                width: 2.25em;
-            }
-            .b-dynamic {
-                font-weight: bold;
-                color: black;
-                padding-left: 0.25em;
-                width: 2.7em;
+                width: 4em;
             }
 			.county:hover {
                 fill: #d6206c;
@@ -132,12 +133,20 @@
             .author a {
                 color: #919191;
             }
+			.ikejeanes {
+                border:none;
+                width: 100%;
+                aspect-ratio: 4/1.4;
+                overflow: hidden;
+            }
             @media only screen and (max-width: 768px) {
                 .head-title { }
+                .header {height: fit-content; }
                 .footer { }
 		    }	
             @media only screen and (max-width: 1040px) {
                 .left-side {font-size: 1.1vw;}
+                .header {padding-bottom: 1vw;}
                 .header span {font-size: 1.3vw;}
                 .head-title {font-size: 2vw !important;}
                 .footer {font-size: 1.3vw;}
@@ -165,51 +174,248 @@
                     float: right;
                     padding-top: 0.25vw;
                 }
-		    }           	       
+					
+		    }    
+            @media print {
+                .main {
+                    width: 90%;
+                    left: 5%;
+                }
+                .left-side {
+                    width: 36%;
+                    font-size: 9pt;
+                }
+                #svgContainer {
+                    position: relative;
+                    aspect-ratio: 3.1/2;
+                    width: 64%;
+                    display: flex;
+                }
+                .ikejeanes {
+                    aspect-ratio: 4/2.1;
+                }
+            }
+            @page {
+                margin: 2px;
+            }       	       
 		</style>	
 	</head>
 	<body>
 		<div class="main">
-            <div class="header" id="header"></div>
+		     <div class="header" id="header">
+				<h1 style="text-align: center;">It's More Than Changing Clocks</h1>
+				<h2 style="text-align: center;">Winter Morning Darkness in 900 Counties Makes That Clear</h2>
+				<span>Daylight Saving Time and time zones have greater impact than is commonly known. With the aid of two interactive maps, you can quickly get a picture of your home county DST characteristics, rather than seeing only a region as a whole. All 3,000 US counties are covered. As you will see, some counties are more heavily impacted than others. With this page you can, locally and nationally, evaluate DST & time-zone impact. To compare a short Memorial Day DST to the currently practiced Daylight Saving Time, move the cursor to various points on this map. Long DSTs tend to have adverse impact. For these two DSTs you will see percent of days having sunrises later than 7:00 AM. The higher the percentage, the more adverse the impact. 7:00 - 7:20 AM is a common wake-up time. Whenever a DST delivers more than 50% of sunrises after 7:00 AM, you may unnecessarily spend most of your year in adverse headwinds. The second map at the end of this page focuses on corrected time zones.</span>
+				<br>
+            	<span class="head-title">Five DST Options: Impact on Health and School Children Safety </span>
+            </div>
             <div class="middle">
                 <div class="left-side">
                     <div class="data-row"><h3 id="county-name">Pulaski, VA</h3><span class="dynamic">&nbsp;&nbsp;&nbsp;</span></div>
                     <div>
-                        <div class="data-row"><span>Population:</span><span class="dynamic" id="data-population" style="width: 5em;">34 k</span></div>
-                        <div class="data-row"><span>Solar Delay in minutes:</span><span class="dynamic" id="data-delay">23</span><span class="b-dynamic" id="b_data-delay">&nbsp;&nbsp;&nbsp;</span></div>
-                        <div class="data-row"><span>With DST, Delay in minutes:</span><span class="dynamic" id="data-delay-dst">83</span><span class="b-dynamic" id="b_data-delay-dst">&nbsp;&nbsp;&nbsp;</span></div>
+                        <div class="data-row"><span>Population:</span><span class="dynamic" id="data-population">34 k</span></div>
+                        <div class="data-row"><span>Solar Delay in minutes:</span><span class="dynamic" id="data-delay">23</span></div>
+                        <div class="data-row"><span>With DST, Delay in minutes:</span><span class="dynamic" id="data-delay-dst">83</span></div>
                     </div>
                     <div>
-                        <div class="data-row"><h3>#1 No DST</h3><span class="dynamic" id="data-population">&nbsp;&nbsp;&nbsp;</span></div> 
-                        <div class="data-row"><span>% Sunrises after 7:00 AM:</span><span class="dynamic" id="nodst-pr-sun-7">28%</span><span class="b-dynamic" id="b_nodst-pr-sun-7">&nbsp;&nbsp;&nbsp;</span></div>
-                        <div class="data-row"><span>Latest Sunrise:</span><span class="dynamic" id="nodst-min-sun-7">7:35</span><span class="b-dynamic" id="b_nodst-min-sun-7">&nbsp;&nbsp;&nbsp;</span></div>
+                        <div class="data-row"><h3>#1 No DST</h3><span class="dynamic">&nbsp;&nbsp;&nbsp;</span></div> 
+                        <div class="data-row"><span>% Sunrises after 7:00 AM:</span><span class="dynamic" id="nodst-pr-sun-7">28%</span></div>
+                        <div class="data-row"><span>Latest Sunrise:</span><span class="dynamic" id="nodst-min-sun-7">7:35</span></div>
                     </div>
                     <div>
-                        <div class="data-row"><h3>#2 Memorial Day DST</h3><span class="dynamic" id="data-population">&nbsp;&nbsp;&nbsp;</span></div>
-                        <div class="data-row"><span>% Sunrises after 7:00 AM:</span><span class="dynamic" id="memorial-pr-sun-7">28%</span><span class="b-dynamic" id="b_memorial-pr-sun-7">&nbsp;&nbsp;&nbsp;</span></div>
-                        <div class="data-row"><span>Latest Sunrise:</span><span class="dynamic" id="memorial-min-sun-7">7:35</span><span class="b-dynamic" id="b_memorial-min-sun-7">&nbsp;&nbsp;&nbsp;</span></div>
+                        <div class="data-row"><h3>#2 Memorial Day DST</h3><span class="dynamic">&nbsp;&nbsp;&nbsp;</span></div>
+                        <div class="data-row"><span>% Sunrises after 7:00 AM:</span><span class="dynamic" id="memorial-pr-sun-7">28%</span></div>
+                        <div class="data-row"><span>Latest Sunrise:</span><span class="dynamic" id="memorial-min-sun-7">7:35</span></div>
                     </div>
                     <div>
-                        <div class="data-row"><h3>#3 1966-2006 DST</h3><span class="dynamic" id="data-population">&nbsp;&nbsp;&nbsp;</span></div> 
-                        <div class="data-row"><span>% Sunrises after 7:00 AM:</span><span class="dynamic" id="1966-pr-sun-7">42%</span><span class="b-dynamic" id="b_1966-pr-sun-7">&nbsp;&nbsp;&nbsp;</span></div>
-                        <div class="data-row"><span>Latest Sunrise:</span><span class="dynamic" id="1966-min-sun-7">7:45</span><span class="b-dynamic" id="b_1966-min-sun-7">&nbsp;&nbsp;&nbsp;</span></div>
+                        <div class="data-row"><h3>#3 1966-2006 DST</h3><span class="dynamic">&nbsp;&nbsp;&nbsp;</span></div> 
+                        <div class="data-row"><span>% Sunrises after 7:00 AM:</span><span class="dynamic" id="1966-pr-sun-7">42%</span></div>
+                        <div class="data-row"><span>Latest Sunrise:</span><span class="dynamic" id="1966-min-sun-7">7:45</span></div>
                     </div>
                     <div>
-                        <div class="data-row"><h3>#4 2007 Current DST</h3><span class="dynamic" id="data-population">&nbsp;&nbsp;&nbsp;</span></div> 
-                        <div class="data-row"><span>% Sunrises after 7:00 AM:</span><span class="dynamic" id="current-pr-sun-7">51%</span><span class="b-dynamic" id="b_current-pr-sun-7">&nbsp;&nbsp;&nbsp;</span></div>
-                        <div class="data-row"><span>Latest Sunrise:</span><span class="dynamic" id="current-min-sun-7">7:50</span><span class="b-dynamic" id="b_current-min-sun-7">&nbsp;&nbsp;&nbsp;</span></div>
+                        <div class="data-row"><h3>#4 2007 Current DST</h3><span class="dynamic">&nbsp;&nbsp;&nbsp;</span></div> 
+                        <div class="data-row"><span>% Sunrises after 7:00 AM:</span><span class="dynamic" id="current-pr-sun-7">51%</span></div>
+                        <div class="data-row"><span>Latest Sunrise:</span><span class="dynamic" id="current-min-sun-7">7:50</span></div>
                     </div>
                     <div>
-                        <div class="data-row"><h3>#5 Permanent DST</h3><span class="dynamic" id="data-population">&nbsp;&nbsp;&nbsp;</span></div> 
-                        <div class="data-row"><span>% Sunrises after 7:00 AM:</span><span class="dynamic" id="permanent-pr-sun-7">58%</span><span class="b-dynamic" id="b_permanent-pr-sun-7">&nbsp;&nbsp;&nbsp;</span></div>
-                        <div class="data-row"><span>Latest Sunrise:</span><span class="dynamic" id="permanent-min-sun-7">8:35</span><span class="b-dynamic" id="b_permanent-min-sun-7">&nbsp;&nbsp;&nbsp;</span></div>
+                        <div class="data-row"><h3>#5 Permanent DST</h3><span class="dynamic">&nbsp;&nbsp;&nbsp;</span></div> 
+                        <div class="data-row"><span>% Sunrises after 7:00 AM:</span><span class="dynamic" id="permanent-pr-sun-7">58%</span></div>
+                        <div class="data-row"><span>Latest Sunrise:</span><span class="dynamic" id="permanent-min-sun-7">8:35</span></div>
                     </div>                   
                 </div>
                 <div id="svgContainer">
                 </div>
             </div>
             <div class="footer">
-            </div>             
+       			<span style="font-size: 7pt; color: #6b1b10;"><b>Crib Sheet for Considering Daylight Savings Time</b><br>
+				DST vs. No DST: The intermediate point, a short Memorial Day DST, might suit both sides.<br>
+				DST bad: May be true, but time-zone hodgepodge can be a key component.<br>
+				The Sleeper: Without repair, inappropriate time zones repeatedly produce excessive winter morning darkness.</span>
+      
+
+				<span>With Daylight Saving Time you may have felt off kilter in the spring after reluctantly changing clocks and quipping, "Spring Forward, Fall Back." This effect has been magnified by inappropriate time zones, which in winter months unnecessarily result in late sunrises for more than 53 million Americans. Having many excessively dark mornings is often evidence of an inappropriate time zone. This can be fixed by the stroke of a pen.</span>
+
+				<span>By a wide margin, lopsided time-zones and DST have put us out of sync with time. In each county, "delay" measures the extent to which we are out of sync. By way of explanation, in each time zone there is an instant (local solar noon) when the sun is directly overhead, and morning and afternoon hours are effectively equally long (the midday). When clock time is also at 12 o'clock noon, position of sun and clocks are in sync, and solar delay, as referred to here, is zero. When, by your watch, it takes longer for the sun to arrive at this midpoint, the delay is a positive. A negative delay indicates that the sun arrives before your watch time indicates. With DST, delay is always positive. At all hours of the day, the delay is present. [If you would like to calculate delay on your own. You can do so. Using absolute values, solar delay as used here equals (longitude/15- time_zone_integer_hours_from_Greenwich) *60.] </span>
+				
+				<span>Especially in view of circadian influence, "delay" could just as easily be called a harm index, where high values harm health and negative values promote health. Do you know your delay? You can find your county's delay in the map Table. If you live in an above dark red map region, it will be between 92 and 118 minutes during DST — on average 101 minutes.</span>
+
+				<span>The adverse health and economic impact of large positive solar delays is often described as the 
+				<a href="https://www.google.com/search?hl=en&as_q=dst+western+edge+effect">"Western Edge Effect."</a> 
+				This effect plays a role in decreased life expectancy, shortened sleep, increased body weight, breast cancer, diabetes, heart disease, sleep disturbances, and mental & cognitive problems. These effects persist long beyond when clocks were changed in the spring. Small or negative delays are generally considered beneficial.</span>
+
+				<span>As for the western-edge economic influence, this map is equally divided into five colors. Average economic activity, as measured by per capita personal income and population, is greatest at the two lightest map colors. Albeit that causes which produced it are uncertain, economic activity is 71% as great at the middle green and only 46% as great at the two darkest western-edge map colors.</span>
+
+				<span>Circadian impact is large. "More than 50% of all gene expression is under circadian control," as Michael Rosbash pointed out in his 2017 Nobel Prize in Physiology/Medicine Lecture. In the early morning, circadian clocks throughout the body are set in response to the sun’s light/dark cycle. Folks who wear fitness devices and attend to their health in other ways often do so because they want optimum health. In the face of high delays, will they get it? Will those in the dark red regions above be at the top of their game?</span>
+				<hr>
+
+				<h3>Fixing It</h3>
+
+				<span><b>DST fix:</b> Arizona and Hawaii have rejected Daylight Saving Time. 15 U.S. Code § 260a allows any state to go on Permanent Standard Time within its borders without congressional action. To change a DST requires congressional action. Eliminating Daylight Saving Time reduces delay by 60 minutes. This can be accomplished in any state without congressional action. The second best option, which does require congressional action, is to choose the short Memorial to Labor Day DST. In most cases these two options yield about the same percentage of sunrises after 7:00 AM.</span>
+				
+				<span><b>Time Zone fix:</b> Time Zones are defined at county levels named in the Table. There are two ways an area can be moved from one time zone to another: by Federal statute or by Secretary of Transportation regulation. The dark red regions on the above map, with long solar delays, are caused by ancient, time-zone choices for western-edge counties. Changing time zones that now apply would place these counties in a highly favorable position <code>&#8212;</code> a move from the darkest above map color to the lightest, a 60 minute reduction in delay.</span> 
+
+				<span><b>Quick Local fix:</b> For DST rejectionists, experiments to maintain sync with solar time by setting clocks and watches within a household to local solar time and using DST time elsewhere are occasionally possible, but rarely employed. When stuck in untenable circumstances this option can be useful.</span>
+				<hr>
+				
+				<h3>Time Zone Peril</h3>
+
+				<span>Longitude and time march in lockstep, 4 minutes for each degree of longitude. Time zones began as useful approximations to replace calculating time based on the sun‘s position at each location. Though they began in this honest fashion, they have since been manipulated far from this sensible starting point.</span>
+
+				<span>In a symmetric one-hour time zone, solar delays are limited to a +30 to -30 minute range. In practice, US time zones are profoundly lopsided. They strongly favor the western edge. At its most extreme points, the Eastern time-zone range is approximately +57 to -29 minutes; Central Time, +58 to -20; Mountain Time, +50 to -17; and Pacific Time, +16 to -20. The zones with high positive delays endanger children who must wait for school buses in early morning darkness and cause discomfort for those of us who are compelled to get up one hour earlier on cold winter mornings.</span>
+
+				<span>A time-zone fix is imperative. Eastern and Central Time zones have massively shifted westward since they were initially drawn in 1883 — about 378 miles from an appropriate point. Yet, in the past 20 years only 15 counties have changed. This 378 miles is not pulled out of thin air. At the median latitude for US counties (38.3°), each minute of delay in a time zone translates to 13.5 miles. At a 58 minute delay, the time zone is 28 minutes longer than the appropriate 30 minutes. Thus, the 378 miles [= 28*13.5].</span>
+				
+				<span>Applying an inappropriate time zone at the county level is more pernicious than a DST. Like a DST it increases delay by 60 minutes, but it is unremitting <code>&#8212;</code> continuously active for 365 days of the year.</span>
+				<hr>
+
+				<h3>DST Choices</h3>
+				
+				<span>The Current DST, option #4, is the dominant time in the US. It exists for 65% of the year. It contains 55 more Spring days (March to May) and 71 more Fall days (Sept. to Nov.) than the summertime Memorial Day DST. These 126 additional days of Daylight Savings Time raise warning flags, given that they all occur during school months <code>&#8212;</code> when early morning cognition and school bus safety are issues. By avoiding harmful aspects of long DSTs and by having a low percentage of sunrises after 7:00 AM, the Memorial to Labor Day DST is a winner. A summer celebration, not a year-long anathema.</span>
+
+				<span>Options Summary: <b >#1</b> No DST, Permanent Standard Time; <b >#2</b> Memorial to Labor Day DST, May 20 - Sep 9, 113 Days, 31% of year; <b >#3</b> 1966 to 2006 DST, Apr 24 - Oct 30, 190 Days, 52% of year; <b >#4</b> Current DST, Mar 10 - Nov 3, 239 Days, 65% of year; <b >#5</b> Proposed Permanent DST, 100% of year.</span>
+				
+				<hr>
+				<h3>Memorial to Labor Day DST: the Unofficial Start and End of Summer</h3>
+				
+				<span>Prior to the 1966 law, Iowa and Minnesota practiced a Memorial to Labor Day DST. The Congressional Record shows that as late as 1971 the American Farm Bureau policy was, "We support legislation limiting daylight saving time to the period between Memorial Day and Labor Day." And, "We continue to support the right of a state to exempt itself from daylight saving time." In view of the currently long DST, the Farm Bureau position now appears especially appropriate.</span>
+				
+				<span>Let’s look at median western-edge times prior to applying a long or short DST. In the Table, “Proximity” is sunrise relative to a 7:00 AM wake-up. For a sunrise to stay clear of a 7:00 AM wake-up, proximity at the start of the DST must exceed 60 minutes. The Memorial to Labor Day DST is safely wide of this mark. Its proximity is at 1:45 hours. Sunrise is at 5:51 AM. Mornings are long, 7:11 hours. By this time of the year morning sunlight is changing very slowly. It will take 32 days for sunrise to occur 8 minutes earlier. This DST provides plenty of early morning sunlight for circadian entrainment. To initiate a DST on May 20 will reduce morning hours by only a modest 14%. Many of those hours occur when we are fast asleep.</span>
+				
+				<span> While we sleep, it makes good use of some of the abundant May 20th very early morning hours. With an eye toward practicality, it begins a week before and ends the week after heavy holiday transportation demands. Perhaps paramount for many, it happily blends with the tradition of Memorial Day being the unofficial start of summer and Labor Day being the unofficial end of summer <code>&#8212;</code> a bona fide summertime DST.</span>
+				
+				<table style="width:100%">
+                    <tr>
+                        <th># Day</th>
+                        <th>Date</th>
+                        <th>Event</th>
+                        <th>Sunrise</th>
+                        <th>Morning Hours</th>
+                        <th>DST % of Hours</th>
+                        <th>Proximity</th>
+                    </tr>
+                        <tr>
+                        <td>1</td>
+                        <td>Jan 1</td>
+                        <td>New Year</td>
+                        <td>7:46 AM</td>
+                        <td>4:46</td>
+                        <td>21%</td>
+                        <td>-0:46</td>
+                    </tr>
+
+                    <tr>
+                        <td>69</td>
+                        <td>Mar 10</td>
+                        <td>Current DST Start</td>
+                        <td>6:48 AM</td>
+                        <td>5:51</td>
+                        <td>17%</td>
+                        <td>0:11</td>
+                    </tr>
+                    <tr>
+                        <td>140</td>
+                        <td>May 20</td>
+                        <td>Memorial Day</td>
+                        <td>5:14 AM</td>
+                        <td>7:11</td>
+                        <td>14%</td>
+                        <td>1:45</td>
+                    </tr>
+                    
+                        <tr>
+                        <td>172</td>
+                        <td>Jun 21</td>
+                        <td>Longest Morning</td>
+                        <td>5:06 AM</td>
+                        <td>7:25</td>
+                        <td>13%</td>
+                        <td>1:53</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>252</td>
+                        <td>Sep 9</td>
+                        <td>Labor Day</td>
+                        <td>6:06 AM</td>
+                        <td>6:20</td>
+                        <td>16%</td>
+                        <td>0:53</td>
+                    </tr>
+                    <tr>
+                        <td>308</td>
+                        <td>Nov 4</td>
+                        <td>Current DST End</td>
+                        <td>6:58 AM</td>
+                        <td>5:15</td>
+                        <td>19%</td>
+                        <td>0:02</td>
+                    </tr>
+                </table>
+
+				<span style="font-size: 6pt;">Above based on NOAA sunrise spreadsheet, cited below, where a median latitude is employed at a conventional western edge border (latitude 38.3, longitude -82.5, time zone -5, solar delay 30 minutes, local solar times prior to DST adjustments).</span>
+
+				<span>By contrast, the current DST fails on all points. Its sunrises are late. Morning hours, short. Morning sunlight, changing rapidly. Proximity to sleep hours, harmful. </span>
+				
+				<span>From January 1 onwards, morning hours naturally increase 2:38 hours. DST takes one hour from this increase <code>&#8212;</code> reducing the increase by 40%.</span>
+
+				<span>Because of the 1966 law and long DSTs, we never experienced in our lifetimes the natural unfolding of spring. With the prior gradual increase of sunlight, we safely and pleasurably could adapt over a period of about 50 to 59 days to 60-minute natural increases in morning sunlight. Long DSTs instead gave us spring seasons with an <b>adjust</b> (adapt to a 60-minute increase of morning sunlight over about 55 days), <b>reverse</b> (in one day take away those 60 minutes), <b>adjust again</b> (try to recover) cycle. It is no wonder that changing clocks became odious.</span>
+
+		        <hr>
+
+				<h3>Fix your local time zone & no need to change clocks the following spring.</h3>
+
+				<iframe src="https://ikejeanes.github.io/" class="ikejeanes" title="Interactive DST/time-zone map"></iframe>
+
+				<span>Now let's look at the time zone fix. The first column in the above Table is the same as in the first map. However, when a time zone is changed, results from the fix are shown separately in black in a second column. The second column is empty when no change occurs. This map shows pure one-hour time zones. Solar delays fall within a +30 to -30 minute range. Eastern time begins at longitude -67.5°; Central, at -82.5°; Mountain at -97.5°; and Pacific at -112.5°. These time-zone boundary lines are shown on the map. Fixing time zones in this orderly fashion produces the highly favorable outcomes shown in the map's Table.</span> 
+
+				<span>To eliminate high delays, 479 counties in the Eastern time zone, 370 in the Central, and 47 in the Mountain need to change. In these counties when we change time zone and select the Memorial Day DST instead of the Current DST, we go from an average 64% of sunrises after 7:00 AM to 4%. On average, our latest sunrise goes from 8:04 AM to 6:54 AM. By these changes in DST and time zone, we reliably start our mornings with adequate sunlight. In almost 900 US counties, we did not and could not do this before, because we were locked into an inappropriate DST and an inappropriate time zone.</span> 
+
+				<span>When these time-zone changes are applied at the instant a DST begins in the spring of the year, these counties (53 million people) will not need, at that time, to change clocks. They will seamlessly transition into their new time.</span>
+				<hr>
+				<hr>	
+				<h4>Health Links</h4> 
+				<span><a href="https://www.wbur.org/hereandnow/2022/04/07/standard-time-health-daylight">How permanent standard time could save lives, explained by a sleep expert</a><br>
+				<a href="https://www.pbs.org/newshour/nation/how-daylight-saving-time-poses-a-host-of-health-concerns-according-to-a-neurologist">How daylight saving time poses a host of health concerns, according to a neurologist</a><br>
+				<a href="https://www.nm.org/healthbeat/healthy-tips/daylight-savings-time-your-health">Daylight Saving Time and Your Health Plus, Steps to Saving Zzz's</a><br> 
+				<a href="https://theconversation.com/breast-cancer-risk-higher-in-western-parts-of-time-zones-is-electric-light-to-blame-85803">Breast cancer risk higher in western parts of time zones</a><br> 
+				<a href="https://scholar.google.com/scholar?hl=en&as_sdt=0%2C47&q=Daylight+saving+time%3A++position+statement&btnG=">Google Scholar: Medical Group Position Statements on Daylight Saving Time</a><br>				
+				<a href="https://www.theatlantic.com/ideas/archive/2022/03/daylight-saving-time-bad-teenagers/627095/">Daylight Saving Is a Trap</a><br>
+				<a href="https://savestandardtime.com/">Save Standard Time</a><br> 
+				<a href="https://scholar.google.com/scholar?cites=5048686168652731518">Google Scholar: Topic, Adverse DST Effects For Adolescents</a><br>
+				<a href="https://www.ishn.com/articles/110234-kids-on-way-to-school-endangered-by-morning-darkness">Kids on way to school endangered by morning darkness</a><br> 
+				<a href="https://stnonline.com/blogs/school-bus-stops-waiting-in-the-dark/">School Bus Stops: Waiting in the Dark</a><br> </span>
+
+
+				<h4>DST Maps in the News</h4>
+				<span><a href="https://nytech.media/five-dst-looks-to-reimagine-our-clock-changing-habits/">New York Tech: Five DST Looks To Reimagine Our Clock-Changing Habits</a><br>
+				<a href="https://andywoodruff.com/blog/where-to-hate-daylight-saving-time-and-where-to-love-it/">Andy Woodruff: Where to hate daylight saving time and where to love it</a><br> 
+				<a href="https://www.bloomberg.com/news/articles/2022-03-19/maps-show-where-daylight-saving-leaves-cities-dark">Bloomberg: Where Mornings Would Get Darker Under Permanent Daylight Saving Time</a><br> 
+				<a href="https://www.washingtonpost.com/weather/2022/03/17/daylight-saving-time-sunrise-sunset/">Washington Post: Brighter winter evenings would come at the expense of darker mornings.</a><br>
+				<a href="https://gml.noaa.gov/grad/solcalc/NOAA_Solar_Calculations_year.xls">Download NOAA Sunrise .xls Spreadsheet</a><br></span> 
+	
+                <span class="author"><a href="https://creativecommons.org/licenses/by-nd/4.0/deed.en">Creative commons license CC BY-ND.</a> <a href="mailto:ike@dstmap.com">Courtesy of I. Jeanes.</a></span>
+            
+                </div>             
 		</div>	
 
 		<script>	
@@ -223,15 +429,6 @@
             const tooltip = d3.select("body").append("div")	
 				.attr("id", "tooltip")				
 				.style("opacity", 0);
-
-            // add "|" symbol if data is not empty
-            function symbolVal (val) {
-                if (!val.trim()) {
-                    return val;
-                } else {
-                    return '| ' + val;
-                }
-            };
 
             // just div svgContainer
             const svgCont = d3.select("#svgContainer"); 
@@ -257,7 +454,6 @@
                 // add layers to map
                 const counties = topojson.feature(geo, geo.objects.counties);
                 const states = topojson.feature(geo, geo.objects.states);
-                const lines = topojson.feature(geo, geo.objects.lines1);
 
                 // join data from topojson and csv
                 counties.features.forEach(function(county, i) {
@@ -309,12 +505,13 @@
                             else {return (event.pageY - (tooltipHeight * 1.1)) + "px"}
                         })); 
                         // add dynamic content to tooltip
-                        tooltip.html("<span style='color: black;'>Short DST: </span><span style='color: #6b1b10;'>" + d.properties["#2_%aft7:00"] + "</span>  <span style='color: black;'>" + symbolVal(d.properties["B_#2_%aft7:00"]) + "</span><br><span style='color: black;'>Long DST:&nbsp;</span><span style='color: #6b1b10;'>" + d.properties["#4_%aft7:00"] + "</span>  <span style='color: black;'>" + symbolVal(d.properties["B_#4_%aft7:00"]) + "</span>");
+                        tooltip.html("<span style='color: black;'>Short DST: <span><span style='color: red;'>" + d.properties["#2_%aft7:00"] + "</span><br><span style='color: black;'>Long DST: <span><span style='color: red;'>" + d.properties["#4_%aft7:00"] + "</span>");
+                        
                         // change table data dynamically after each mouseover
                         let selectedVal = $('input[name="radiogroup"]:checked').val(); 
                         if (selectedVal === 'mouse') {
                             $('#county-name').html(d.properties.Header);
-                            $('#data-population').html(d.properties.k_population);
+                            $('#data-population').html(d.properties.population);
                             $('#data-delay').html(d.properties.Delay);
                             $('#data-delay-dst').html(d.properties["Delay with DST"]);
                             $('#nodst-pr-sun-7').html(d.properties["#1_%aft7:00"]);
@@ -327,19 +524,6 @@
                             $('#current-min-sun-7').html(d.properties["#4 hour"]);
                             $('#permanent-pr-sun-7').html(d.properties["#5_%aft7:00"]);
                             $('#permanent-min-sun-7').html(d.properties["#5 hour"]);
-
-                            $('#b_data-delay').html(symbolVal(d.properties.B_Delay));
-                            $('#b_data-delay-dst').html(symbolVal(d.properties["B_Delay with DST"]));
-                            $('#b_nodst-pr-sun-7').html(symbolVal(d.properties["B_#1_%aft7:00"]));
-                            $('#b_nodst-min-sun-7').html(symbolVal(d.properties["B_#1 hour"]));
-                            $('#b_memorial-pr-sun-7').html(symbolVal(d.properties["B_#2_%aft7:00"]));
-                            $('#b_memorial-min-sun-7').html(symbolVal(d.properties["B_#2 hour"]));
-                            $('#b_1966-pr-sun-7').html(symbolVal(d.properties["B_#3_%aft7:00"]));
-                            $('#b_1966-min-sun-7').html(symbolVal(d.properties["B_#3 hour"]));
-                            $('#b_current-pr-sun-7').html(symbolVal(d.properties["B_#4_%aft7:00"]));
-                            $('#b_current-min-sun-7').html(symbolVal(d.properties["B_#4 hour"]));
-                            $('#b_permanent-pr-sun-7').html(symbolVal(d.properties["B_#5_%aft7:00"]));
-                            $('#b_permanent-min-sun-7').html(symbolVal(d.properties["B_#5 hour"]));
                         } else {
                             console.log('Mouseover disable');
                         }                        
@@ -353,7 +537,7 @@
 
                         if (selectedVal === 'click') {
                             $('#county-name').html(d.properties.Header);
-                            $('#data-population').html(d.properties.k_population);
+                            $('#data-population').html(d.properties.population);
                             $('#data-delay').html(d.properties.Delay);
                             $('#data-delay-dst').html(d.properties["Delay with DST"]);
                             $('#nodst-pr-sun-7').html(d.properties["#1_%aft7:00"]);
@@ -366,19 +550,6 @@
                             $('#current-min-sun-7').html(d.properties["#4 hour"]);
                             $('#permanent-pr-sun-7').html(d.properties["#5_%aft7:00"]);
                             $('#permanent-min-sun-7').html(d.properties["#5 hour"]);
-
-                            $('#b_data-delay').html(symbolVal(d.properties.B_Delay));
-                            $('#b_data-delay-dst').html(symbolVal(d.properties["B_Delay with DST"]));
-                            $('#b_nodst-pr-sun-7').html(symbolVal(d.properties["B_#1_%aft7:00"]));
-                            $('#b_nodst-min-sun-7').html(symbolVal(d.properties["B_#1 hour"]));
-                            $('#b_memorial-pr-sun-7').html(symbolVal(d.properties["B_#2_%aft7:00"]));
-                            $('#b_memorial-min-sun-7').html(symbolVal(d.properties["B_#2 hour"]));
-                            $('#b_1966-pr-sun-7').html(symbolVal(d.properties["B_#3_%aft7:00"]));
-                            $('#b_1966-min-sun-7').html(symbolVal(d.properties["B_#3 hour"]));
-                            $('#b_current-pr-sun-7').html(symbolVal(d.properties["B_#4_%aft7:00"]));
-                            $('#b_current-min-sun-7').html(symbolVal(d.properties["B_#4 hour"]));
-                            $('#b_permanent-pr-sun-7').html(symbolVal(d.properties["B_#5_%aft7:00"]));
-                            $('#b_permanent-min-sun-7').html(symbolVal(d.properties["B_#5 hour"]));
                         } else {
                             console.log('Clicking disable')
                         }
@@ -393,20 +564,6 @@
                     .attr("d", path)
                     .attr("stroke", "#444444")
                     .attr("stroke-width", 0.75)
-                    .attr("stroke-linecap", "round")
-                    .attr("stroke-linejoin", "round")
-                    .attr("fill", "none")
-                    .style("pointer-events", "none"); 
-
-                // add lines layer
-                g.append("g")
-                    .selectAll("path")
-                    .data(lines.features)
-                    .enter()
-                    .append("path")
-                    .attr("d", path)
-                    .attr("stroke", "#111111")
-                    .attr("stroke-width", 2)
                     .attr("stroke-linecap", "round")
                     .attr("stroke-linejoin", "round")
                     .attr("fill", "none")
